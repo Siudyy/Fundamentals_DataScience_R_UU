@@ -5,7 +5,7 @@ A Repository to keep track of the group assignments within the UU course “Fund
 European Social Survey European Research Infrastructure (ESS ERIC) (2026) ESS11 - integrated file, edition 4.2 [Data set]. Sikt - Norwegian Agency for Shared Services in Education and Research. https://doi.org/10.21338/ess11e04_2.
 
 ### Contributors
-Kacper Siudowski
-Bjorn Klaassen
-Raven Verhallen
+Kacper Siudowski,
+Bjorn Klaassen,
+Raven Verhallen,
 Nicolas Mathews
