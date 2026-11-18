@@ -6,4 +6,6 @@ European Social Survey European Research Infrastructure (ESS ERIC) (2026) ESS11 
 
 ### Contributors
 Kacper Siudowski
-(fill in)
+Bjorn Klaassen
+Raven Verhallen
+Nicolas Mathews
