@@ -1,0 +1,24 @@
+---
+title: "Assignment 1"
+author: "Kacper Siudowski, Bjorn Klaassen, Raven Verhallen, Nicolas Mathews"
+format: 
+	html:
+		embed-resources: true
+---
+
+# Data pre-processing
+
+```{r}
+# setup R library's and working directories
+library(tidyverse)
+library(ggplot2)
+library(here)
+
+dataDir <- "data"
+outDir <- "output"
+figDir <- "figures"
+```
+
+```{r}
+data <- read.csv(here::here(dataDir, "blabla.csv"))
+```
