@@ -33,14 +33,43 @@ ncol(full_data)
 # Select the columns we will need and store it in a new table.
 relevant_data <- select(full_data, trust.in.politicians, age, education, household.income, political.interest, vote)
 
-# number of columns after selection.
-ncol(relevant_data)
+```
 
-# prune the rows where the necessary information needed for analysis is not available.
+Next we prune the rows where the necessary information needed for analysis is not available.
+We remove the rows by filtering by the missing value encoding(s) for each columns. 
+For trust.in.politicians, household.income and education the values we filter by are: 77,88 and 99.
 
-relevant_data 
 
-# number of rows after pruning incomplete data rows.
+```{r}
+filter_values <- c(77,88,99)
+
+relevant_data <- 
+	relevant_data |>
+	filter(!(trust.in.politicians %in% filter_values)) |>
+	filter(!(household.income %in% filter_values)) |>
+	filter(!(education %in% append(filter_values, 55))) # 55 has the value of other which makes comparison of level of education arbitrary, so we added it to the values that need to be filtered from education.
+
+```
+
+For vote and political.interest the values we filter by are: 7,8 and 9.
+
+```{r}
+filter_values = c(7,8,9)
+
+relevant_data <- 
+	relevant_data|> 
+	filter(!(vote %in% filter_values)) |>
+	filter(!(political.interest %in% filter_values))
+
+```
+
+Final pruning step, for age the value we filter by is: 999.
+
+```{r}
+relevant_data <- filter(relevant_data, age != 999)
+
+# The size of the data set after selection and filtering.
 nrow(relevant_data)
+ncol(relevant_data)
 
 ```
