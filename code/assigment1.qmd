@@ -31,7 +31,7 @@ nrow(full_data)
 ncol(full_data)
 
 # Select the columns we will need and store it in a new table.
-relevant_data <- select(full_data, county, political.interest, trust.in.politicians, age, education, household.income, vote)
+relevant_data <- select(full_data, trust.in.politicians, age, education, household.income, political.interest, vote)
 
 # number of columns after selection.
 ncol(relevant_data)
