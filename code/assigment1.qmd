@@ -9,16 +9,21 @@ format:
 # Data pre-processing
 
 ```{r}
+#| output: false
+
 # setup R library's and working directories
 library(tidyverse)
 library(ggplot2)
 library(here)
 
+# Define variables pointing to the relevant directories
 dataDir <- "data"
 outDir <- "output"
 figDir <- "figures"
 ```
 
 ```{r}
-data <- read.csv(here::here(dataDir, "blabla.csv"))
+# Read csv and store it in the data variable. Ensure separator is ; and not ,
+data <- read.csv(here::here(dataDir, "ESS11e04_2.csv"), sep = ";")
+
 ```
