@@ -2,8 +2,8 @@
 title: "Assignment 1"
 author: "Kacper Siudowski, Bjorn Klaassen, Raven Verhallen, Nicolas Mathews"
 format: 
-	html:
-		embed-resources: true
+  html:
+   embed-resources: true
 ---
 
 # Data pre-processing
@@ -35,10 +35,9 @@ relevant_data <- select(full_data, trust.in.politicians, age, education, househo
 
 ```
 
-Next we prune the rows where the necessary information needed for analysis is not available.
+Next we prune the rows where the necessary information needed for analysis is not available. 
 We remove the rows by filtering by the missing value encoding(s) for each columns. 
 For trust.in.politicians, household.income and education the values we filter by are: 77,88 and 99.
-
 
 ```{r}
 filter_values <- c(77,88,99)
