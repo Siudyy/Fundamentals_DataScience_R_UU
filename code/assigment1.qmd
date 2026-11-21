@@ -23,7 +23,24 @@ figDir <- "figures"
 ```
 
 ```{r}
-# Read csv and store it in the data variable. Ensure separator is ; and not ,
-data <- read.csv(here::here(dataDir, "ESS11e04_2.csv"), sep = ";")
+# Read csv and store it in the data variable. Ensure separator is (;) and not (,) to match ESS11e04_2 format.
+full_data <- read.csv(here::here(dataDir, "ESS11e04_2.csv"), sep = ";")
+
+# Current size of the data-set.
+nrow(full_data)
+ncol(full_data)
+
+# Select the columns we will need and store it in a new table.
+relevant_data <- select(full_data, county, political.interest, trust.in.politicians, age, education, household.income, vote)
+
+# number of columns after selection.
+ncol(relevant_data)
+
+# prune the rows where the necessary information needed for analysis is not available.
+
+relevant_data 
+
+# number of rows after pruning incomplete data rows.
+nrow(relevant_data)
 
 ```
