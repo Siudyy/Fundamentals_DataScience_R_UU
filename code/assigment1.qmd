@@ -22,19 +22,34 @@ outDir <- "output"
 figDir <- "figures"
 ```
 
+
+
 ```{r}
-# Read csv and store it in the data variable. Ensure separator is (;) and not (,) to match ESS11e04_2 format.
-full_data <- read.csv(here::here(dataDir, "ESS11e04_2.csv"), sep = ";")
+# Read csv and store it in the data variable. 
+full_data <- read.csv(here::here(dataDir, "ESS11e04_2.csv"))
 
 # Current size of the data-set.
 nrow(full_data)
 ncol(full_data)
 
-# Select the columns we will need and store it in a new table.
-relevant_data <- select(full_data, trust.in.politicians, age, education, household.income, political.interest, vote)
+# Select the columns we will need and store it in a new table based on the codebook.
+relevant_data <- select(full_data, trstplt, agea, eisced, hinctnta, polintr, vote)
+
+# Rename colomns so the names are more readable based on the codebook
+relevant_data <- rename(relevant_data, 
+			 age = agea,
+		   trust.in.politicians = trstplt,
+			 education = eisced, 
+			 household.income = hinctnta, 
+			 political.interest = polintr,
+			 vote = vote
+			 )
+
 
 ```
 
+
+#Pruning#
 Next we prune the rows where the necessary information needed for analysis is not available. 
 We remove the rows by filtering by the missing value encoding(s) for each columns. 
 For trust.in.politicians, household.income and education the values we filter by are: 77,88 and 99.
@@ -72,3 +87,7 @@ nrow(relevant_data)
 ncol(relevant_data)
 
 ```
+
+
+
+
