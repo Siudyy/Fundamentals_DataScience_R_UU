@@ -6,7 +6,14 @@ format:
    embed-resources: true
 ---
 
-# Data pre-processing
+**Reasearch questions**
+
+Linear regression: Can we predict how much someone trusts politicians based on their education, age, political interest and income?
+
+Logistic regression: Can we predict if someone voted based on their education, age, political intrest and income?
+
+
+**Data pre-processing**
 
 ```{r}
 #| output: false
@@ -22,7 +29,7 @@ outDir <- "output"
 figDir <- "figures"
 ```
 
-
+**Chaning names**
 
 ```{r}
 # Read csv and store it in the data variable. 
@@ -49,7 +56,7 @@ relevant_data <- rename(relevant_data,
 ```
 
 
-#Pruning#
+**Pruning**
 Next we prune the rows where the necessary information needed for analysis is not available. 
 We remove the rows by filtering by the missing value encoding(s) for each columns. 
 For trust.in.politicians, household.income and education the values we filter by are: 77,88 and 99.
@@ -88,6 +95,6 @@ ncol(relevant_data)
 
 ```
 
-
+**Analyse**
 
 
