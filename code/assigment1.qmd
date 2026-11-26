@@ -29,20 +29,21 @@ outDir <- "output"
 figDir <- "figures"
 ```
 
-**Chaning names**
+**Changing names**
 
 ```{r}
 # Read csv and store it in the data variable. 
 full_data <- read.csv(here::here(dataDir, "ESS11e04_2.csv"))
 
-# Current size of the data-set.
-nrow(full_data)
-ncol(full_data)
+```
 
+Current size of the data-set: `{r} nrow(full_data)` rows and `{r} ncol(full_data)` columns.
+
+```{r}
 # Select the columns we will need and store it in a new table based on the codebook.
 relevant_data <- select(full_data, trstplt, agea, eisced, hinctnta, polintr, vote)
 
-# Rename colomns so the names are more readable based on the codebook
+# Rename columns so the names are more readable based on the codebook
 relevant_data <- rename(relevant_data, 
 			 age = agea,
 		   trust.in.politicians = trstplt,
@@ -51,10 +52,7 @@ relevant_data <- rename(relevant_data,
 			 political.interest = polintr,
 			 vote = vote
 			 )
-
-
 ```
-
 
 **Pruning**
 Next we prune the rows where the necessary information needed for analysis is not available. 
@@ -88,13 +86,13 @@ Final pruning step, for age the value we filter by is: 999.
 
 ```{r}
 relevant_data <- filter(relevant_data, age != 999)
-
-# The size of the data set after selection and filtering.
-nrow(relevant_data)
-ncol(relevant_data)
-
 ```
+
+Current size of the data-set after selection and filtering: `{r} nrow(relevant_data)` rows and `{r} ncol(relevant_data)` columns.
 
 **Analyse**
 
+```{r}
+
+```
 
