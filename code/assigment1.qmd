@@ -6,13 +6,19 @@ format:
    embed-resources: true
 ---
 
+# To Do List:
+
+- the **logic** behind your research question
+
+<!-- -->
+
+- where your **data** come from
+
+- Explorative Data Analysis per variable.
+
 ### **Research questions**
 
-*Linear regression:*
-Can we predict how much someone trusts politicians based on their education, age, political interest and income?
-
-*Logistic regression:*
-Can we predict if someone voted based on their education, age, political intrest and income?
+*Linear regression:* Can we predict how much someone trusts politicians based on their education, age, political interest and income?
 
 ### **Data pre-processing**
 
@@ -42,7 +48,7 @@ Current size of the data-set: `{r} nrow(full_data)` rows and `{r} ncol(full_data
 
 ```{r}
 # Select the columns we will need and store it in a new table based on the codebook.
-df <- select(full_data, trstplt, agea, eisced, hinctnta, polintr, vote)
+df <- select(full_data, trstplt, agea, eisced, hinctnta, polintr)
 
 # Rename columns so the names are more readable based on the codebook
 df <- rename(df, 
@@ -51,11 +57,10 @@ df <- rename(df,
 			 education            = eisced, 
 			 household.income     = hinctnta, 
 			 political.interest   = polintr,
-			 vote                 = vote
 			 )
 ```
 
-#### **NA  Encoding**
+#### **NA Encoding**
 
 | Missing Value Encoding | Meaning of Encoding       |
 |------------------------|---------------------------|
@@ -65,7 +70,6 @@ df <- rename(df,
 | 7, 77                  | Refusal of Answer         |
 | 8, 88                  | Don't know                |
 | 9, 99, 999             | Missing Value             |
-| 3                      | Not eligible (only vote)  |
 
 The data set contains several codes that represent responses that do not represent meaningful values for our analysis. We will re-code them as missing values
 
@@ -95,18 +99,13 @@ df <- df |>
 
 ```
 
-For vote and political.interest the values we re-code are: 7, 8 and 9.
+For political.interest the values we re-code are: 7, 8 and 9.
 
 ```{r}
 filter_values = c(7, 8 , 9)
 
 df <- df |> 
 	mutate(
-		vote = replace(
-			vote,
-			vote %in% filter_values,
-			NA
-		),
 		political.interest = replace(
 			political.interest,
 			political.interest %in% filter_values,
@@ -116,7 +115,7 @@ df <- df |>
 
 ```
 
-For age the value we re-code is 999, vote: 3, and education: 0.
+For age the value we re-code is 999, and education: 0.
 
 ```{r}
 df <- df |> 
@@ -124,11 +123,6 @@ df <- df |>
 		age = replace(
 			age,
 			age == 999,
-			NA
-		),
-		vote = replace(
-			vote,
-			vote == 3,
 			NA
 		),
 		education = replace(
@@ -154,6 +148,46 @@ Current size of the data-set after selection: `{r} nrow(df)` rows and `{r} ncol(
 
 ## Explorative Data Analysis
 
+Note: We take the assumption that variables trust.in.politicians, education, household.income and political.interest are evenly spaced. Even though the original variables are ordinal. Do we keep them numeric? switch them to ordinal? For linear Regression use numeric, but also add Spearman correlations and frequency tables to our data analysis?
+
+#### Education
+
+education is measured using the EISCED variable, which classifies respondents into ordered categories. A frequency table was used to examine the distribution.
+
 ```{r}
+ggplot(df, aes(x = education)) +
+	geom_histogram() +
+	labs(x = "Education level (EISCED)",
+			 y = "Frequency",
+			 title = "Education level frequency table") +
+	stat_bin(binwidth = 0.5) +
+	theme_minimal()
+```
+
+The results show that category 4 is the most represented and category 1 the least represented.
+
+Next we calculated the mean trust in politicians per education level, as shown in the boxplot and table below.
+
+```{r}
+ggplot(df, aes(x = factor(education), y = trust.in.politicians)) +
+	geom_boxplot() +
+	labs(
+		title = "Trust in Politicians by Education Level",
+		x = "Education level (EISCED)",
+		y = "Trust in politicians (0–10)"
+	) +
+	theme_minimal()
+```
+
+```{r}
+df |>
+	group_by(education) |>
+	summarise(
+		n = n(),
+		mean_trust = mean(trust.in.politicians, na.rm = TRUE),
+		sd_trust = sd(trust.in.politicians, na.rm = TRUE)
+	)
 
 ```
+
+We can see that the lowest education level had also the lowest mean trust. The highest education level had the highest mean trust. Standard deviations remained relatively the same. The results suggest a slight increase in mean trust in politicians as education increases.
