@@ -57,9 +57,10 @@ relevant_data <- rename(relevant_data,
 
 | Missing Value Encoding | Meaning of Encoding       |
 |------------------------|---------------------------|
+| 0                      | Not possible to harmonize |
 | 55                     | Other                     |
 | 66                     | Not applicable            |
-| 7, 77                  | Refusal of Anwser         |
+| 7, 77                  | Refusal of Answer         |
 | 8, 88                  | Don't know                |
 | 9, 99, 999             | Missing Value             |
 | 3                      | Not eligible (only vote)  |
@@ -91,16 +92,17 @@ relevant_data <-
 
 ```
 
-For age the value we mutate is: 999, vote the value 3
+For age the value we mutate is: 999, vote the value 3, and education 0
 
 ```{r}
 relevant_data <- mutate(relevant_data, age = replace(age, age == 999, NA))
 relevant_data <- mutate(relevant_data, vote = replace(vote, vote == 3, NA))
+relevant_data <- mutate(relevant_data, education = replace(education, education == 0, NA))
 ```
 
-Current size of the data-set after selection and filtering: `{r} nrow(relevant_data)` rows and `{r} ncol(relevant_data)` columns.
+Current size of the data-set after selection: `{r} nrow(relevant_data)` rows and `{r} ncol(relevant_data)` columns.
 
-## Analyse
+## Explorative Data Analysis
 
 ```{r}
 
