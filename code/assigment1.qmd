@@ -8,9 +8,11 @@ format:
 
 ### **Research questions**
 
-Linear regression: Can we predict how much someone trusts politicians based on their education, age, political interest and income?
+*Linear regression:*
+Can we predict how much someone trusts politicians based on their education, age, political interest and income?
 
-Logistic regression: Can we predict if someone voted based on their education, age, political interest and income?
+*Logistic regression:*
+Can we predict if someone voted based on their education, age, political intrest and income?
 
 ### **Data pre-processing**
 
@@ -40,20 +42,20 @@ Current size of the data-set: `{r} nrow(full_data)` rows and `{r} ncol(full_data
 
 ```{r}
 # Select the columns we will need and store it in a new table based on the codebook.
-relevant_data <- select(full_data, trstplt, agea, eisced, hinctnta, polintr, vote)
+df <- select(full_data, trstplt, agea, eisced, hinctnta, polintr, vote)
 
 # Rename columns so the names are more readable based on the codebook
-relevant_data <- rename(relevant_data, 
-			 age = agea,
+df <- rename(df, 
+			 age                  = agea,
 		   trust.in.politicians = trstplt,
-			 education = eisced, 
-			 household.income = hinctnta, 
-			 political.interest = polintr,
-			 vote = vote
+			 education            = eisced, 
+			 household.income     = hinctnta, 
+			 political.interest   = polintr,
+			 vote                 = vote
 			 )
 ```
 
-#### **NA - encoding**
+#### **NA  Encoding**
 
 | Missing Value Encoding | Meaning of Encoding       |
 |------------------------|---------------------------|
@@ -67,40 +69,88 @@ relevant_data <- rename(relevant_data,
 
 The data set contains several codes that represent responses that do not represent meaningful values for our analysis. We will re-code them as missing values
 
-For trust.in.politicians, household.income and education the values we filter by are: 55, 66, 77, 88 and 99.
+For trust.in.politicians, household.income and education the values we re-code are: 55, 66, 77, 88 and 99.
 
 ```{r}
 filter_values <- c(55, 66, 77, 88, 99) 
 
-relevant_data <- 
-	relevant_data |>
-	mutate(trust.in.politicians = replace(trust.in.politicians, trust.in.politicians %in% filter_values, NA)) |>
-	mutate(household.income = replace(household.income, household.income %in% filter_values, NA)) |>
-	mutate(education = replace(education, education %in% filter_values, NA))
+df <- df |>
+	mutate(
+		trust.in.politicians = replace(
+			trust.in.politicians,
+			trust.in.politicians %in% filter_values,
+			NA
+		),
+		household.income = replace(
+			household.income,
+			household.income %in% filter_values,
+			NA
+		),
+		education = replace(
+			education,
+			education %in% filter_values,
+			NA
+		)
+	)
 
 ```
 
-For vote and political.interest the values we mutate are: 7,8 and 9.
+For vote and political.interest the values we re-code are: 7, 8 and 9.
 
 ```{r}
-filter_values = c(7,8,9)
+filter_values = c(7, 8 , 9)
 
-relevant_data <- 
-	relevant_data|> 
-	mutate(vote = replace(vote, vote %in% filter_values, NA)) |>
-	mutate(political.interest = replace(political.interest, political.interest %in% filter_values, NA))
+df <- df |> 
+	mutate(
+		vote = replace(
+			vote,
+			vote %in% filter_values,
+			NA
+		),
+		political.interest = replace(
+			political.interest,
+			political.interest %in% filter_values,
+			NA
+		)
+	)
 
 ```
 
-For age the value we mutate is: 999, vote the value 3, and education 0
+For age the value we re-code is 999, vote: 3, and education: 0.
 
 ```{r}
-relevant_data <- mutate(relevant_data, age = replace(age, age == 999, NA))
-relevant_data <- mutate(relevant_data, vote = replace(vote, vote == 3, NA))
-relevant_data <- mutate(relevant_data, education = replace(education, education == 0, NA))
+df <- df |> 
+	mutate(
+		age = replace(
+			age,
+			age == 999,
+			NA
+		),
+		vote = replace(
+			vote,
+			vote == 3,
+			NA
+		),
+		education = replace(
+			education,
+			education == 0,
+			NA
+		)
+	)
 ```
 
-Current size of the data-set after selection: `{r} nrow(relevant_data)` rows and `{r} ncol(relevant_data)` columns.
+#### **Reverse Encoding**
+
+For easier interpretation we want all the values to be increasing. in our model. So a 0 or 1 should indicate a low value and 10 or 100 a high value. In the variable political.interest this is reversed, so we will match it with our other variables.
+
+```{r}
+df <- df |>
+	mutate(
+		political.interest = 5 - political.interest
+	)
+```
+
+Current size of the data-set after selection: `{r} nrow(df)` rows and `{r} ncol(df)` columns.
 
 ## Explorative Data Analysis
 
