@@ -12,14 +12,14 @@ Can we predict how much someone trusts politicians based on their education, age
 Can we predict if someone voted based on their education, age, political intrest and income?
 
 #### Variables and coding
-| Concept | Variable name | Coding |
-| --- | --- | --- | 
-| Trust in politicians | `trstplt` | 0–10 |
-| Voting behaviour | `vote` | 1 = Yes; 2 = No; 3 = Not eligible |
-| Education | `eisced` | 1-7 |
-| Age | `agea` | Years |
-| Political interest | `polintr` | 1–4 |
-| Household income | `hinctnta` | 1–10 | 
+| Concept | Variable name | Coding | Missing value encoding|
+| --- | --- | --- | ---|
+| Trust in politicians | `trstplt` | 0–10 | 77, 88, 99 |
+| Voting behaviour | `vote` | 1 = Yes; 2 = No; 3 = Not eligible | 7, 8, 9 |
+| Education | `eisced` | 1-7 | (55 = other), 77, 88, 99 |
+| Age | `agea` | Years | 999 |
+| Political interest | `polintr` | 1–4 | 7, 8, 9 |
+| Household income | `hinctnta` | 1–10 | 77, 88, 99  |
 
 ### Contributors
 Kacper Siudowski,
