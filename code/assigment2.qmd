@@ -1,0 +1,149 @@
+---
+title: "Assignment 2"
+author: "Kacper Siudowski, Bjorn Klaassen, Raven Verhallen, Nicolas Mathews"
+format: 
+  html:
+   embed-resources: true
+---
+
+### **Research question**
+
+*Logistic regression:* Can we predict if someone voted based on their education, age, political interest and income?
+
+### **Data pre-processing**
+
+```{r}
+#| output: false
+
+# setup R library's and working directories
+library(tidyverse)
+library(ggplot2)
+library(here)
+
+# Define variables pointing to the relevant directories
+dataDir <- "data"
+outDir <- "output"
+figDir <- "figures"
+```
+
+#### **Changing names**
+
+```{r}
+# Read csv and store it in the data variable. 
+full_data <- read.csv(here::here(dataDir, "ESS11e04_2.csv"))
+
+```
+
+Current size of the data-set: `{r} nrow(full_data)` rows and `{r} ncol(full_data)` columns.
+
+```{r}
+# Select the columns we will need and store it in a new table based on the codebook.
+df <- select(full_data, agea, eisced, hinctnta, polintr, vote)
+
+# Rename columns so the names are more readable based on the codebook
+df <- rename(df, 
+			 age                  = agea,
+			 education            = eisced, 
+			 household.income     = hinctnta, 
+			 political.interest   = polintr,
+			 vote                 = vote
+			 )
+```
+
+#### **NA Encoding**
+
+| Missing Value Encoding | Meaning of Encoding       |
+|------------------------|---------------------------|
+| 0                      | Not possible to harmonize |
+| 55                     | Other                     |
+| 66                     | Not applicable            |
+| 7, 77                  | Refusal of Answer         |
+| 8, 88                  | Don't know                |
+| 9, 99, 999             | Missing Value             |
+| 3                      | Not eligible (only vote)  |
+
+The data set contains several codes that represent responses that do not represent meaningful values for our analysis. We will re-code them as missing values
+
+For trust.in.politicians, household.income and education the values we re-code are: 55, 66, 77, 88 and 99.
+
+```{r}
+filter_values <- c(55, 66, 77, 88, 99) 
+
+df <- df |>
+	mutate(
+		household.income = replace(
+			household.income,
+			household.income %in% filter_values,
+			NA
+		),
+		education = replace(
+			education,
+			education %in% filter_values,
+			NA
+		)
+	)
+
+```
+
+For vote and political.interest the values we re-code are: 7, 8 and 9.
+
+```{r}
+filter_values = c(7, 8 , 9)
+
+df <- df |> 
+	mutate(
+		vote = replace(
+			vote,
+			vote %in% filter_values,
+			NA
+		),
+		political.interest = replace(
+			political.interest,
+			political.interest %in% filter_values,
+			NA
+		)
+	)
+
+```
+
+For age the value we re-code is 999, vote: 3, and education: 0.
+
+```{r}
+df <- df |> 
+	mutate(
+		age = replace(
+			age,
+			age == 999,
+			NA
+		),
+		vote = replace(
+			vote,
+			vote == 3,
+			NA
+		),
+		education = replace(
+			education,
+			education == 0,
+			NA
+		)
+	)
+```
+
+#### **Reverse Encoding**
+
+For easier interpretation we want all the values to be increasing. in our model. So a 0 or 1 should indicate a low value and 10 or 100 a high value. In the variable political.interest this is reversed, so we will match it with our other variables.
+
+```{r}
+df <- df |>
+	mutate(
+		political.interest = 5 - political.interest
+	)
+```
+
+Current size of the data-set after selection: `{r} nrow(df)` rows and `{r} ncol(df)` columns.
+
+## Explorative Data Analysis
+
+```{r}
+
+```
