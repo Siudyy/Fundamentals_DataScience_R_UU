@@ -10,11 +10,11 @@ format:
 
 - the **logic** behind your research question
 
-<!-- -->
-
 - where your **data** come from
 
 - Explorative Data Analysis per variable.
+
+- Convert some variables into factors? (education, income, and such)
 
 ### **Research questions**
 
