@@ -6,14 +6,13 @@ format:
    embed-resources: true
 ---
 
-**Reasearch questions**
+### **Research questions**
 
 Linear regression: Can we predict how much someone trusts politicians based on their education, age, political interest and income?
 
-Logistic regression: Can we predict if someone voted based on their education, age, political intrest and income?
+Logistic regression: Can we predict if someone voted based on their education, age, political interest and income?
 
-
-**Data pre-processing**
+### **Data pre-processing**
 
 ```{r}
 #| output: false
@@ -29,7 +28,7 @@ outDir <- "output"
 figDir <- "figures"
 ```
 
-**Changing names**
+#### **Changing names**
 
 ```{r}
 # Read csv and store it in the data variable. 
@@ -54,45 +53,55 @@ relevant_data <- rename(relevant_data,
 			 )
 ```
 
-**Pruning**
-Next we prune the rows where the necessary information needed for analysis is not available. 
-We remove the rows by filtering by the missing value encoding(s) for each columns. 
-For trust.in.politicians, household.income and education the values we filter by are: 77,88 and 99.
+#### **NA - encoding**
+
+| Missing Value Encoding | Meaning of Encoding       |
+|------------------------|---------------------------|
+| 55                     | Other                     |
+| 66                     | Not applicable            |
+| 7, 77                  | Refusal of Anwser         |
+| 8, 88                  | Don't know                |
+| 9, 99, 999             | Missing Value             |
+| 3                      | Not eligible (only vote)  |
+
+The data set contains several codes that represent responses that do not represent meaningful values for our analysis. We will re-code them as missing values
+
+For trust.in.politicians, household.income and education the values we filter by are: 55, 66, 77, 88 and 99.
 
 ```{r}
-filter_values <- c(77,88,99)
+filter_values <- c(55, 66, 77, 88, 99) 
 
 relevant_data <- 
 	relevant_data |>
-	filter(!(trust.in.politicians %in% filter_values)) |>
-	filter(!(household.income %in% filter_values)) |>
-	filter(!(education %in% append(filter_values, 55))) # 55 has the value of other which makes comparison of level of education arbitrary, so we added it to the values that need to be filtered from education.
+	mutate(trust.in.politicians = replace(trust.in.politicians, trust.in.politicians %in% filter_values, NA)) |>
+	mutate(household.income = replace(household.income, household.income %in% filter_values, NA)) |>
+	mutate(education = replace(education, education %in% filter_values, NA))
 
 ```
 
-For vote and political.interest the values we filter by are: 7,8 and 9.
+For vote and political.interest the values we mutate are: 7,8 and 9.
 
 ```{r}
 filter_values = c(7,8,9)
 
 relevant_data <- 
 	relevant_data|> 
-	filter(!(vote %in% filter_values)) |>
-	filter(!(political.interest %in% filter_values))
+	mutate(vote = replace(vote, vote %in% filter_values, NA)) |>
+	mutate(political.interest = replace(political.interest, political.interest %in% filter_values, NA))
 
 ```
 
-Final pruning step, for age the value we filter by is: 999.
+For age the value we mutate is: 999, vote the value 3
 
 ```{r}
-relevant_data <- filter(relevant_data, age != 999)
+relevant_data <- mutate(relevant_data, age = replace(age, age == 999, NA))
+relevant_data <- mutate(relevant_data, vote = replace(vote, vote == 3, NA))
 ```
 
 Current size of the data-set after selection and filtering: `{r} nrow(relevant_data)` rows and `{r} ncol(relevant_data)` columns.
 
-**Analyse**
+## Analyse
 
 ```{r}
 
 ```
-
